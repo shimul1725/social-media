@@ -1,6 +1,6 @@
 # Social Media App — Phase 1: User Authentication
 
-MERN stack এর প্রথম ধাপ: **Register, Login, JWT Auth, Protected Route**
+First step of the MERN stack build: **Register, Login, JWT Auth, Protected Route**
 
 ## 📁 Structure
 
@@ -14,37 +14,37 @@ social-media-app/
 
 ## 🔧 Backend Setup
 
-1. ফোল্ডারে যান:
+1. Go to the folder:
    ```bash
    cd backend
    npm install
    ```
 
-2. `.env.example` কপি করে `.env` বানান এবং মান বসান:
+2. Copy `.env.example` to `.env` and fill in the values:
    ```bash
    cp .env.example .env
    ```
 
-   MongoDB Atlas থেকে connection string নিয়ে `MONGO_URI` এ বসান।
-   (Atlas ড্যাশবোর্ড → Database → Connect → "Connect your application")
+   Get your connection string from MongoDB Atlas and set it as `MONGO_URI`.
+   (Atlas dashboard → Database → Connect → "Connect your application")
 
-   `JWT_SECRET` এ যেকোনো র‍্যান্ডম লম্বা string দিন (যেমন: একটা paragraph)।
+   Set `JWT_SECRET` to any long random string (e.g. a random paragraph).
 
-3. সার্ভার চালান:
+3. Start the server:
    ```bash
    npm run dev
    ```
-   সার্ভার চলবে: `http://localhost:5000`
+   Server runs at: `http://localhost:5000`
 
 ### API Endpoints
 
-| Method | Route              | Access  | কাজ                      |
-|--------|--------------------|---------|--------------------------|
-| POST   | /api/auth/register | Public  | নতুন ইউজার তৈরি          |
-| POST   | /api/auth/login    | Public  | লগইন, JWT token রিটার্ন  |
-| GET    | /api/auth/me       | Private | লগইন করা ইউজারের তথ্য    |
+| Method | Route              | Access  | Description                    |
+|--------|--------------------|---------|---------------------------------|
+| POST   | /api/auth/register | Public  | Create a new user               |
+| POST   | /api/auth/login    | Public  | Log in, returns a JWT token     |
+| GET    | /api/auth/me       | Private | Get the logged-in user's info   |
 
-Postman দিয়ে টেস্ট করার সময় `/me` এ যাওয়ার জন্য header এ দিন:
+When testing `/me` with Postman, add this header:
 ```
 Authorization: Bearer <token>
 ```
@@ -53,50 +53,50 @@ Authorization: Bearer <token>
 
 ## 💻 Frontend Setup
 
-1. নতুন টার্মিনালে:
+1. In a new terminal:
    ```bash
    cd frontend
    npm install
    ```
 
-2. `.env.example` কপি করে `.env` বানান (দরকার হলে API URL পরিবর্তন করুন):
+2. Copy `.env.example` to `.env` (change the API URL if needed):
    ```bash
    cp .env.example .env
    ```
 
-3. চালান:
+3. Run it:
    ```bash
    npm run dev
    ```
-   ব্রাউজারে খুলুন: `http://localhost:5173`
+   Open in browser: `http://localhost:5173`
 
 ### Pages
-- `/register` — নতুন অ্যাকাউন্ট তৈরি
-- `/login` — লগইন
-- `/dashboard` — লগইন করার পর দেখা যাবে (protected route)
+- `/register` — create a new account
+- `/login` — log in
+- `/dashboard` — visible only after logging in (protected route)
 
 ---
 
-## ✅ এই Phase এ যা যা আছে
+## ✅ What's included in this phase
 
 - [x] User model (Mongoose) + bcrypt password hashing
 - [x] Register API
-- [x] Login API (JWT token generate)
+- [x] Login API (JWT token generation)
 - [x] Auth middleware (protect routes)
 - [x] Get logged-in user info (`/me`)
-- [x] React: Register/Login form
-- [x] React Context দিয়ে auth state management
-- [x] localStorage এ token সংরক্ষণ
-- [x] Protected route (Dashboard শুধু লগইন করলে দেখা যাবে)
+- [x] React: Register/Login forms
+- [x] Auth state management via React Context
+- [x] Token stored in localStorage
+- [x] Protected route (Dashboard visible only when logged in)
 
-## ⏭️ পরবর্তী ধাপ (Phase 2)
+## ⏭️ Next Step (Phase 2)
 
 - Profile update, avatar/cover photo upload
 - Follow / Friend request system
 
 ---
 
-## ⚠️ নোট
+## ⚠️ Notes
 
-- এখনো **styling** ঠিক করা হয়নি (আপনি বলেছিলেন "পরে ঠিক করব") — বর্তমানে শুধু basic CSS দেওয়া আছে যাতে ফর্মগুলো দেখতে ব্যবহারযোগ্য লাগে। পরে চাইলে Tailwind, Bootstrap বা নিজের ডিজাইন বসাতে পারবেন — কোনো ফাংশনালিটি ভাঙবে না।
-- `.env` ফাইল কখনো GitHub এ push করবেন না — `.gitignore` এ `.env` যোগ করে নিন।
+- Styling hasn't been finalized yet (you mentioned you'd handle it later) — currently only basic CSS is included so the forms look usable. You can later add Tailwind, Bootstrap, or your own design without breaking any functionality.
+- Never push the `.env` file to GitHub — it's already added to `.gitignore`.
