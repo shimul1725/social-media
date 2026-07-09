@@ -1,25 +1,76 @@
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { fetchMyProfile } from "../api/userApi";
+import { getImageUrl } from "../utils/getImageUrl";
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [profile, setProfile] = useState(null);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const data = await fetchMyProfile();
+        setProfile(data);
+      } catch (err) {
+        // ignore — page still works without extra profile stats
+      }
+    };
+    loadProfile();
+  }, []);
 
   return (
-    <div className="dashboard-container">
-      <div className="dashboard-card">
-        <h2>স্বাগতম, {user?.name} 👋</h2>
-        <p>ইমেইল: {user?.email}</p>
-        <p className="hint">
-          এটি Phase 1 এর basic dashboard। এখান থেকে পরবর্তী ধাপে Profile, News
-          Feed, Chat ইত্যাদি ফিচার যোগ করা হবে।
-        </p>
-        <button onClick={handleLogout}>লগআউট</button>
+    <div className="home-container">
+      <div
+         className="welcome-banner"
+         style={{ backgroundImage: `url(${getImageUrl(profile?.coverPhoto)})` }}
+      >
+      <div className="welcome-overlay" />
+      <img
+          src={getImageUrl(profile?.avatar)}
+          alt="avatar"
+    className="welcome-avatar"
+  />
+  <div className="welcome-text">
+    <h2>স্বাগতম, {user?.name} 👋</h2>
+    <p>{profile?.bio || "আজকের দিনটা কেমন যাচ্ছে?"}</p>
+  </div>
+</div>
+
+      {profile && (
+        <div className="stats-row">
+          <div className="stat-card">
+            <strong>{profile.followers?.length || 0}</strong>
+            <span>ফলোয়ার</span>
+          </div>
+          <div className="stat-card">
+            <strong>{profile.following?.length || 0}</strong>
+            <span>ফলোয়িং</span>
+          </div>
+        </div>
+      )}
+
+      <div className="quick-links">
+        <Link to="/profile" className="quick-link-card">
+          <span className="quick-link-icon">👤</span>
+          <div>
+            <strong>আমার প্রোফাইল</strong>
+            <p>প্রোফাইল দেখুন ও এডিট করুন</p>
+          </div>
+        </Link>
+
+        <Link to="/search" className="quick-link-card">
+          <span className="quick-link-icon">🔍</span>
+          <div>
+            <strong>মানুষ খুঁজুন</strong>
+            <p>নতুন বন্ধু খুঁজে ফলো করুন</p>
+          </div>
+        </Link>
+      </div>
+
+      <div className="coming-soon-card">
+        <p>🚧 News Feed, Post, এবং Chat শীঘ্রই আসছে (পরবর্তী Phase)</p>
       </div>
     </div>
   );
