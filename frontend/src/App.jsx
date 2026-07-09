@@ -7,6 +7,8 @@ import Profile from "./pages/Profile";
 import UserProfile from "./pages/UserProfile";
 import Search from "./pages/Search";
 import Feed from "./pages/Feed";
+import Inbox from "./pages/Inbox";
+import ChatWindow from "./pages/ChatWindow";
 import Navbar from "./components/Navbar";
 
 function App() {
@@ -57,6 +59,23 @@ function App() {
            </PrivateRoute>
           }
         />
+        <Route
+           path="/inbox"
+           element={
+              <PrivateRoute>
+               <Inbox />
+              </PrivateRoute>
+           }
+        />
+        <Route
+           path="/chat/:userId"
+           element={
+              <PrivateRoute>
+              <ChatWindow />
+              </PrivateRoute>
+          }
+        />
+
       </Routes>
     </>
   );

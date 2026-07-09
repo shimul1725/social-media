@@ -38,6 +38,7 @@ const Navbar = () => {
       <div className="navbar-links">
         <Link to="/dashboard">হোম</Link>
         <Link to="/feed">📰 ফিড</Link>
+        <Link to="/inbox">💬 মেসেজ</Link>
         <Link to="/search">🔍 খুঁজুন</Link>
         <Link to="/profile" className="navbar-profile">
           <img src={getImageUrl(avatar)} alt="avatar" className="navbar-avatar" />
