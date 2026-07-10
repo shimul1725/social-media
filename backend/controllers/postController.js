@@ -1,4 +1,6 @@
 const Post = require("../models/Post");
+const Notification = require("../models/Notification");
+const { emitToUser } = require("../socket");
 
 // @desc    Create a new post
 // @route   POST /api/posts
@@ -129,6 +131,19 @@ const toggleLike = async (req, res) => {
     }
 
     await post.save();
+
+    // Only notify when liking (not unliking), and never notify yourself
+    if (!alreadyLiked && post.user.toString() !== userId) {
+      const notification = await Notification.create({
+        recipient: post.user,
+        sender: userId,
+        type: "like",
+        post: post._id,
+      });
+
+      const populatedNotification = await notification.populate("sender", "name avatar");
+      emitToUser(post.user.toString(), "newNotification", populatedNotification);
+    }
 
     return res.status(200).json({
       likesCount: post.likes.length,

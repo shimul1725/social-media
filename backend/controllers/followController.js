@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Notification = require("../models/Notification");
+const { emitToUser } = require("../socket");
 
 // @desc    Follow a user
 // @route   PUT /api/users/follow/:id
@@ -29,6 +31,16 @@ const followUser = async (req, res) => {
 
     await targetUser.save();
     await currentUser.save();
+
+    // Create a notification for the person being followed
+    const notification = await Notification.create({
+      recipient: targetId,
+      sender: currentId,
+      type: "follow",
+    });
+
+    const populatedNotification = await notification.populate("sender", "name avatar");
+    emitToUser(targetId, "newNotification", populatedNotification);
 
     return res.status(200).json({ message: `You are now following ${targetUser.name}` });
   } catch (error) {

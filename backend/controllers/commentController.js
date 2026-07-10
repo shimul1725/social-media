@@ -1,4 +1,7 @@
 const Comment = require("../models/Comment");
+const Post = require("../models/Post");
+const Notification = require("../models/Notification");
+const { emitToUser } = require("../socket");
 
 // @desc    Add a comment to a post
 // @route   POST /api/posts/:id/comments
@@ -18,6 +21,20 @@ const addComment = async (req, res) => {
     });
 
     const populatedComment = await comment.populate("user", "name avatar");
+
+    // Notify the post's owner (unless they're commenting on their own post)
+    const post = await Post.findById(req.params.id);
+    if (post && post.user.toString() !== req.user._id.toString()) {
+      const notification = await Notification.create({
+        recipient: post.user,
+        sender: req.user._id,
+        type: "comment",
+        post: post._id,
+      });
+
+      const populatedNotification = await notification.populate("sender", "name avatar");
+      emitToUser(post.user.toString(), "newNotification", populatedNotification);
+    }
 
     return res.status(201).json(populatedComment);
   } catch (error) {

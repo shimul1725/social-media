@@ -1052,3 +1052,75 @@ body {
   background: #8bb3f0;
   cursor: not-allowed;
 }
+
+/* ---------- Notification Bell ---------- */
+
+.navbar-bell {
+  position: relative;
+  font-size: 18px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #e41e3f;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 10px;
+  line-height: 1.4;
+}
+
+/* ---------- Notifications Page ---------- */
+
+.notifications-page {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.notifications-page h2 {
+  margin-bottom: 16px;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.notification-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #050505;
+}
+
+.notification-item:hover {
+  background: #f0f2f5;
+}
+
+.notification-item.unseen {
+  background: #e7f3ff;
+}
+
+.notification-item img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+  flex-shrink: 0;
+}
+
+.notification-item p {
+  font-size: 14px;
+}
