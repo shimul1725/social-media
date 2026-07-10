@@ -12,6 +12,7 @@ const Navbar = () => {
   const [avatar, setAvatar] = useState("");
   const { socket } = useSocket();
   const [unseenCount, setUnseenCount] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -58,28 +59,50 @@ useEffect(() => {
   };
 
   return (
-    <nav className="navbar">
-      <Link to="/dashboard" className="navbar-logo">
-        📘 SocialApp
-      </Link>
-
-      <div className="navbar-links">
-        <Link to="/dashboard">হোম</Link>
-        <Link to="/feed">📰 ফিড</Link>
-        <Link to="/inbox">💬 মেসেজ</Link>
-        <Link to="/search">🔍 খুঁজুন</Link>
-        <Link to="/notifications" className="navbar-bell" onClick={() => setUnseenCount(0)}>
-                     🔔
-         {unseenCount > 0 && <span className="notification-badge">{unseenCount}</span>}
+    
+      <nav className="navbar">
+         <Link to="/dashboard" className="navbar-logo">
+            📘 SocialApp
          </Link>
-        <Link to="/profile" className="navbar-profile">
-          <img src={getImageUrl(avatar)} alt="avatar" className="navbar-avatar" />
-          <span>{user.name}</span>
-        </Link>
-        <button className="navbar-logout" onClick={handleLogout}>
-          লগআউট
-        </button>
-      </div>
+
+      <button
+         className="navbar-hamburger"
+         onClick={() => setMenuOpen(!menuOpen)}
+         aria-label="Menu"
+       >
+         ☰
+       </button>
+
+ <div className={menuOpen ? "navbar-links open" : "navbar-links"}>
+  <Link to="/dashboard" onClick={() => setMenuOpen(false)}>হোম</Link>
+  <Link to="/feed" onClick={() => setMenuOpen(false)}>📰 ফিড</Link>
+  <Link to="/inbox" onClick={() => setMenuOpen(false)}>💬 মেসেজ</Link>
+  <Link to="/search" onClick={() => setMenuOpen(false)}>🔍 খুঁজুন</Link>
+  <Link
+    to="/notifications"
+    className="navbar-bell"
+    onClick={() => {
+      setUnseenCount(0);
+      setMenuOpen(false);
+    }}
+  >
+    🔔
+    {unseenCount > 0 && <span className="notification-badge">{unseenCount}</span>}
+  </Link>
+  <Link to="/profile" className="navbar-profile" onClick={() => setMenuOpen(false)}>
+    <img src={getImageUrl(avatar)} alt="avatar" className="navbar-avatar" />
+    <span>{user.name}</span>
+  </Link>
+  <button
+    className="navbar-logout"
+    onClick={() => {
+      handleLogout();
+      setMenuOpen(false);
+    }}
+  >
+    লগআউট
+  </button>
+</div>
     </nav>
   );
 };
