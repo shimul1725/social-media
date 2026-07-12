@@ -76,6 +76,7 @@ useEffect(() => {
  <div className={menuOpen ? "navbar-links open" : "navbar-links"}>
   <Link to="/dashboard" onClick={() => setMenuOpen(false)}>হোম</Link>
   <Link to="/feed" onClick={() => setMenuOpen(false)}>📰 ফিড</Link>
+  <Link to="/saved" onClick={() => setMenuOpen(false)}>🔖 সেভ করা</Link>
   <Link to="/inbox" onClick={() => setMenuOpen(false)}>💬 মেসেজ</Link>
   <Link to="/search" onClick={() => setMenuOpen(false)}>🔍 খুঁজুন</Link>
   <Link

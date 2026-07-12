@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import UserProfile from "./pages/UserProfile";
 import Search from "./pages/Search";
 import Feed from "./pages/Feed";
+import SavedPosts from "./pages/SavedPosts";
 import Inbox from "./pages/Inbox";
 import Notifications from "./pages/Notifications";
 import ChatWindow from "./pages/ChatWindow";
@@ -59,6 +60,14 @@ function App() {
             <Feed />
            </PrivateRoute>
           }
+        />
+        <Route
+           path="/saved"
+           element={
+              <PrivateRoute>
+              <SavedPosts />
+              </PrivateRoute>
+           }
         />
         <Route
            path="/inbox"

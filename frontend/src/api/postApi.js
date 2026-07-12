@@ -59,3 +59,14 @@ export const deleteComment = async (commentId) => {
   const { data } = await API.delete(`/posts/comments/${commentId}`);
   return data;
 };
+// Save or unsave a post (toggle)
+export const toggleSave = async (postId) => {
+  const { data } = await API.put(`/posts/${postId}/save`);
+  return data;
+};
+
+// Get all posts the logged-in user has saved
+export const fetchSavedPosts = async () => {
+  const { data } = await API.get("/posts/saved/me");
+  return data;
+};

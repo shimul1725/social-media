@@ -1272,3 +1272,6 @@ body {
     padding: 0 12px;
   }
 }
+.save-btn.saved {
+  color: #f0932b;
+}

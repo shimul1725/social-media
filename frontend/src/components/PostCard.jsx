@@ -7,6 +7,7 @@ import {
   addComment,
   fetchComments,
   deleteComment,
+  toggleSave,
 } from "../api/postApi";
 import { getImageUrl } from "../utils/getImageUrl";
 import { useAuth } from "../context/AuthContext";
@@ -18,6 +19,7 @@ const PostCard = ({ post, onDeleted, onUpdated }) => {
   const [saving, setSaving] = useState(false);
 
   const [likesCount, setLikesCount] = useState(post.likes?.length || 0);
+  const [saved, setSaved] = useState(post.savedByMe || false);
   const [liked, setLiked] = useState(
     post.likes?.some((id) => id === user?._id) || false
   );
@@ -62,6 +64,15 @@ const PostCard = ({ post, onDeleted, onUpdated }) => {
       // silently ignore, likes aren't critical
     }
   };
+
+ const handleSaveClick = async () => {
+  try {
+    const result = await toggleSave(post._id);
+    setSaved(result.saved);
+  } catch (err) {
+    // silently ignore
+  }
+};
 
   const loadComments = async () => {
     try {
@@ -167,6 +178,13 @@ const PostCard = ({ post, onDeleted, onUpdated }) => {
         <button className="comment-toggle-btn" onClick={toggleCommentsSection}>
           💬 কমেন্ট
         </button>
+        <button
+         className={saved ? "save-btn saved" : "save-btn"}
+         onClick={handleSaveClick}
+         >
+        {saved ? "🔖 সেভ করা আছে" : "📑 সেভ করুন"}
+       </button>
+
       </div>
 
       {showComments && (
