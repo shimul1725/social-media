@@ -8,7 +8,7 @@ const { emitToUser } = require("../socket");
 // @access  Private
 const addComment = async (req, res) => {
   try {
-    const { text } = req.body;
+    const { text, parentComment } = req.body;
 
     if (!text || !text.trim()) {
       return res.status(400).json({ message: "Comment text is required" });
@@ -18,6 +18,7 @@ const addComment = async (req, res) => {
       post: req.params.id,
       user: req.user._id,
       text: text.trim(),
+      parentComment: parentComment || null,
     });
 
     const populatedComment = await comment.populate("user", "name avatar");
@@ -48,11 +49,23 @@ const addComment = async (req, res) => {
 // @access  Private
 const getComments = async (req, res) => {
   try {
-    const comments = await Comment.find({ post: req.params.id })
+    const allComments = await Comment.find({ post: req.params.id })
       .populate("user", "name avatar")
-      .sort({ createdAt: 1 }); // oldest first, like a normal conversation
+      .sort({ createdAt: 1 });
 
-    return res.status(200).json(comments);
+    // Split into top-level comments and replies, then attach each reply
+    // to its parent so the frontend can render them nested.
+    const topLevel = allComments.filter((c) => !c.parentComment);
+    const replies = allComments.filter((c) => c.parentComment);
+
+    const nested = topLevel.map((comment) => ({
+      ...comment.toObject(),
+      replies: replies.filter(
+        (r) => r.parentComment.toString() === comment._id.toString()
+      ),
+    }));
+
+    return res.status(200).json(nested);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error", error: error.message });
