@@ -77,7 +77,7 @@ const updateAvatar = async (req, res) => {
     }
 
     const user = await User.findById(req.user._id);
-    user.avatar = `/uploads/${req.file.filename}`;
+    user.avatar = req.file.path;
     await user.save();
 
     return res.status(200).json({ avatar: user.avatar });
@@ -97,7 +97,7 @@ const updateCoverPhoto = async (req, res) => {
     }
 
     const user = await User.findById(req.user._id);
-    user.coverPhoto = `/uploads/${req.file.filename}`;
+    user.coverPhoto = req.file.path;
     await user.save();
 
     return res.status(200).json({ coverPhoto: user.coverPhoto });

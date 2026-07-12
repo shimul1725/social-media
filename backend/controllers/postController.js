@@ -8,7 +8,7 @@ const { emitToUser } = require("../socket");
 const createPost = async (req, res) => {
   try {
     const { text } = req.body;
-    const image = req.file ? `/uploads/${req.file.filename}` : "";
+    const image = req.file ? req.file.path : "";
 
     if (!text && !image) {
       return res.status(400).json({ message: "Post must have text or an image" });

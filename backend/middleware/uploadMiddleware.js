@@ -1,37 +1,23 @@
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 
-// Make sure the uploads folder exists
-const uploadDir = path.join(__dirname, "..", "uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    // e.g. avatar-<userId>-<timestamp>.jpg
-    const ext = path.extname(file.originalname);
-    const fieldName = file.fieldname; // "avatar" or "coverPhoto"
-    cb(null, `${fieldName}-${req.user._id}-${Date.now()}${ext}`);
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "social-media-app", // all uploads go into this folder on Cloudinary
+    allowed_formats: ["jpg", "jpeg", "png", "webp", "gif"],
+    // Cloudinary needs a unique public_id per file, similar to our old filename logic
+    public_id: (req, file) => {
+      const fieldName = file.fieldname; // "avatar", "coverPhoto", or "image"
+      const userId = req.user?._id || "unknown";
+      return `${fieldName}-${userId}-${Date.now()}`;
+    },
   },
 });
 
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-  if (allowedTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error("Only image files (jpeg, png, webp, gif) are allowed"), false);
-  }
-};
-
 const upload = multer({
   storage,
-  fileFilter,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
 });
 
