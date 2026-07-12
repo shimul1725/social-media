@@ -28,6 +28,8 @@ const PostCard = ({ post, onDeleted, onUpdated }) => {
   const [comments, setComments] = useState([]);
   const [commentsLoaded, setCommentsLoaded] = useState(false);
   const [newComment, setNewComment] = useState("");
+  const [replyingTo, setReplyingTo] = useState(null); // which comment we're replying to
+  const [replyText, setReplyText] = useState("");
   const [commenting, setCommenting] = useState(false);
 
   const isOwner = user?._id === post.user._id;
@@ -106,6 +108,26 @@ const PostCard = ({ post, onDeleted, onUpdated }) => {
       setCommenting(false);
     }
   };
+
+  const handleAddReply = async (e, parentId) => {
+  e.preventDefault();
+  if (!replyText.trim()) return;
+  try {
+    const reply = await addComment(post._id, replyText.trim(), parentId);
+    setComments(
+      comments.map((c) =>
+        c._id === parentId
+          ? { ...c, replies: [...(c.replies || []), reply] }
+          : c
+      )
+    );
+    setReplyText("");
+    setReplyingTo(null);
+  } catch (err) {
+    alert(err.response?.data?.message || "রিপ্লাই করা যায়নি");
+  }
+};
+
 
   const handleDeleteComment = async (commentId) => {
     try {
@@ -189,23 +211,70 @@ const PostCard = ({ post, onDeleted, onUpdated }) => {
 
       {showComments && (
         <div className="comments-section">
-          {comments.map((c) => (
-            <div className="comment-item" key={c._id}>
-              <img src={getImageUrl(c.user.avatar)} alt={c.user.name} />
-              <div className="comment-bubble">
-                <strong>{c.user.name}</strong>
-                <p>{c.text}</p>
-              </div>
-              {c.user._id === user?._id && (
-                <button
-                  className="delete-comment-btn"
-                  onClick={() => handleDeleteComment(c._id)}
-                >
-                  ✕
-                </button>
-              )}
-            </div>
-          ))}
+           {comments.map((c) => (
+                <div key={c._id}>
+                  <div className="comment-item">
+                  <img src={getImageUrl(c.user.avatar)} alt={c.user.name} />
+                  <div className="comment-bubble">
+                  <strong>{c.user.name}</strong>
+                  <p>{c.text}</p>
+            <button
+             className="reply-toggle-btn"
+             onClick={() =>
+             setReplyingTo(replyingTo === c._id ? null : c._id)
+             }
+        >
+          রিপ্লাই
+        </button>
+      </div>
+      {c.user._id === user?._id && (
+        <button
+          className="delete-comment-btn"
+          onClick={() => handleDeleteComment(c._id)}
+        >
+          ✕
+        </button>
+      )}
+    </div>
+
+    {/* Nested replies */}
+    {c.replies?.map((r) => (
+      <div className="comment-item reply-item" key={r._id}>
+        <img src={getImageUrl(r.user.avatar)} alt={r.user.name} />
+        <div className="comment-bubble">
+          <strong>{r.user.name}</strong>
+          <p>{r.text}</p>
+        </div>
+        {r.user._id === user?._id && (
+          <button
+            className="delete-comment-btn"
+            onClick={() => handleDeleteComment(r._id)}
+          >
+            ✕
+          </button>
+        )}
+      </div>
+    ))}
+
+    {/* Reply input box, only shown for the comment being replied to */}
+    {replyingTo === c._id && (
+      <form
+        className="add-comment-form reply-form"
+        onSubmit={(e) => handleAddReply(e, c._id)}
+      >
+        <input
+          type="text"
+          placeholder="একটা রিপ্লাই লিখুন..."
+          value={replyText}
+          onChange={(e) => setReplyText(e.target.value)}
+        />
+        <button type="submit" disabled={!replyText.trim()}>
+          পাঠান
+        </button>
+      </form>
+    )}
+  </div>
+   ))}
 
           <form className="add-comment-form" onSubmit={handleAddComment}>
             <input

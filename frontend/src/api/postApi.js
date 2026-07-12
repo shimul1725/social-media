@@ -43,8 +43,11 @@ export const toggleLike = async (postId) => {
 };
 
 // Add a comment to a post
-export const addComment = async (postId, text) => {
-  const { data } = await API.post(`/posts/${postId}/comments`, { text });
+export const addComment = async (postId, text, parentComment = null) => {
+  const { data } = await API.post(`/posts/${postId}/comments`, {
+    text,
+    parentComment,
+  });
   return data;
 };
 
