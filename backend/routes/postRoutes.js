@@ -10,6 +10,8 @@ const {
   updatePost,
   deletePost,
   toggleLike,
+  toggleSave,
+  getSavedPosts,
 } = require("../controllers/postController");
 
 const { addComment, getComments, deleteComment } = require("../controllers/commentController");
@@ -29,6 +31,12 @@ router.delete("/:id", protect, deletePost);
 
 // Like / unlike a post
 router.put("/:id/like", protect, toggleLike);
+
+// Save / unsave a post
+router.put("/:id/save", protect, toggleSave);
+
+// Get all posts the logged-in user has saved (must come before "/:id" routes)
+router.get("/saved/me", protect, getSavedPosts);
 
 // Comments on a post
 router.post("/:id/comments", protect, addComment);

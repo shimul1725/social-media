@@ -154,6 +154,54 @@ const toggleLike = async (req, res) => {
     return res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+// @desc    Save or unsave a post (toggle)
+// @route   PUT /api/posts/:id/save
+// @access  Private
+const toggleSave = async (req, res) => {
+  try {
+    const User = require("../models/User");
+    const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const user = await User.findById(req.user._id);
+    const postId = req.params.id;
+    const alreadySaved = user.savedPosts.some((id) => id.toString() === postId);
+
+    if (alreadySaved) {
+      user.savedPosts = user.savedPosts.filter((id) => id.toString() !== postId);
+    } else {
+      user.savedPosts.push(postId);
+    }
+
+    await user.save();
+
+    return res.status(200).json({ saved: !alreadySaved });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// @desc    Get all posts the logged-in user has saved
+// @route   GET /api/posts/saved/me
+// @access  Private
+const getSavedPosts = async (req, res) => {
+  try {
+    const User = require("../models/User");
+    const user = await User.findById(req.user._id).populate({
+      path: "savedPosts",
+      populate: { path: "user", select: "name avatar" },
+    });
+
+    return res.status(200).json(user.savedPosts);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
 module.exports = {
   createPost,
@@ -162,4 +210,6 @@ module.exports = {
   updatePost,
   deletePost,
   toggleLike,
+  toggleSave,
+  getSavedPosts,
 };
