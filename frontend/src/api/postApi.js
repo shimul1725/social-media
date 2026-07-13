@@ -73,3 +73,9 @@ export const fetchSavedPosts = async () => {
   const { data } = await API.get("/posts/saved/me");
   return data;
 };
+
+// Share an existing post (optionally with your own caption text)
+export const sharePost = async (postId, text = "") => {
+  const { data } = await API.post(`/posts/${postId}/share`, { text });
+  return data;
+};

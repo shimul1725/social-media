@@ -8,6 +8,7 @@ import {
   fetchComments,
   deleteComment,
   toggleSave,
+  sharePost,
 } from "../api/postApi";
 import { getImageUrl } from "../utils/getImageUrl";
 import { useAuth } from "../context/AuthContext";
@@ -57,6 +58,7 @@ const PostCard = ({ post, onDeleted, onUpdated }) => {
     }
   };
 
+
   const handleLikeClick = async () => {
     try {
       const result = await toggleLike(post._id);
@@ -73,6 +75,15 @@ const PostCard = ({ post, onDeleted, onUpdated }) => {
     setSaved(result.saved);
   } catch (err) {
     // silently ignore
+  }
+};
+
+const handleShareClick = async () => {
+  try {
+    await sharePost(post._id);
+    alert("পোস্টটা শেয়ার হয়েছে! আপনার প্রোফাইলে দেখুন।");
+  } catch (err) {
+    alert(err.response?.data?.message || "শেয়ার করা যায়নি");
   }
 };
 
@@ -184,6 +195,40 @@ const PostCard = ({ post, onDeleted, onUpdated }) => {
       {post.image && (
         <img src={getImageUrl(post.image)} alt="post" className="post-image" />
       )}
+      {post.sharedPost && (
+  <div className="shared-post-box">
+    <div className="post-header">
+      <Link to={`/users/${post.sharedPost.user._id}`}>
+        <img
+          src={getImageUrl(post.sharedPost.user.avatar)}
+          alt={post.sharedPost.user.name}
+          className="post-avatar"
+        />
+      </Link>
+      <div>
+        <Link
+          to={`/users/${post.sharedPost.user._id}`}
+          className="post-author-name"
+        >
+          {post.sharedPost.user.name}
+        </Link>
+        <p className="post-time">
+          {new Date(post.sharedPost.createdAt).toLocaleString("bn-BD")}
+        </p>
+      </div>
+    </div>
+    {post.sharedPost.text && (
+      <p className="post-text">{post.sharedPost.text}</p>
+    )}
+    {post.sharedPost.image && (
+      <img
+        src={getImageUrl(post.sharedPost.image)}
+        alt="shared post"
+        className="post-image"
+      />
+    )}
+  </div>
+)}
 
       <div className="post-stats">
         {likesCount > 0 && <span>❤️ {likesCount}</span>}
@@ -205,6 +250,9 @@ const PostCard = ({ post, onDeleted, onUpdated }) => {
          onClick={handleSaveClick}
          >
         {saved ? "🔖 সেভ করা আছে" : "📑 সেভ করুন"}
+       </button>
+       <button className="share-btn" onClick={handleShareClick}>
+         🔄 শেয়ার
        </button>
 
       </div>
