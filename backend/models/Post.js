@@ -17,6 +17,10 @@ const postSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    video: {
+      type: String,
+      default: "",
+    },
     sharedPost: {
        type: mongoose.Schema.Types.ObjectId,
        ref: "Post",
