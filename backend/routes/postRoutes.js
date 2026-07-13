@@ -12,6 +12,7 @@ const {
   toggleLike,
   toggleSave,
   getSavedPosts,
+  sharePost,
 } = require("../controllers/postController");
 
 const { addComment, getComments, deleteComment } = require("../controllers/commentController");
@@ -34,6 +35,9 @@ router.put("/:id/like", protect, toggleLike);
 
 // Save / unsave a post
 router.put("/:id/save", protect, toggleSave);
+
+// Share a post
+router.post("/:id/share", protect, sharePost);
 
 // Get all posts the logged-in user has saved (must come before "/:id" routes)
 router.get("/saved/me", protect, getSavedPosts);

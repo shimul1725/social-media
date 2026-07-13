@@ -28,6 +28,42 @@ const createPost = async (req, res) => {
     return res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+// @desc    Share an existing post
+// @route   POST /api/posts/:id/share
+// @access  Private
+const sharePost = async (req, res) => {
+  try {
+    const originalPost = await Post.findById(req.params.id);
+
+    if (!originalPost) {
+      return res.status(404).json({ message: "Original post not found" });
+    }
+
+    // Don't allow sharing a post that is itself already a share
+    const rootPostId = originalPost.sharedPost || originalPost._id;
+
+    const { text } = req.body;
+
+    const sharedPost = await Post.create({
+      user: req.user._id,
+      text: text || "",
+      sharedPost: rootPostId,
+    });
+
+    const populatedPost = await sharedPost.populate([
+      { path: "user", select: "name avatar" },
+      {
+        path: "sharedPost",
+        populate: { path: "user", select: "name avatar" },
+      },
+    ]);
+
+    return res.status(201).json(populatedPost);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
 // @desc    Get news feed (all posts, newest first)
 // @route   GET /api/posts
@@ -35,9 +71,13 @@ const createPost = async (req, res) => {
 const getFeed = async (req, res) => {
   try {
     const posts = await Post.find()
-      .populate("user", "name avatar")
-      .sort({ createdAt: -1 })
-      .limit(50);
+       .populate("user", "name avatar")
+       .populate({
+       path: "sharedPost",
+       populate: { path: "user", select: "name avatar" },
+       })
+       .sort({ createdAt: -1 })
+       .limit(50);
 
     return res.status(200).json(posts);
   } catch (error) {
@@ -53,6 +93,10 @@ const getUserPosts = async (req, res) => {
   try {
     const posts = await Post.find({ user: req.params.userId })
       .populate("user", "name avatar")
+      .populate({
+       path: "sharedPost",
+       populate: { path: "user", select: "name avatar" },
+      })
       .sort({ createdAt: -1 });
 
     return res.status(200).json(posts);
@@ -212,4 +256,5 @@ module.exports = {
   toggleLike,
   toggleSave,
   getSavedPosts,
+  sharePost,
 };
