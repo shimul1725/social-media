@@ -62,8 +62,9 @@ useEffect(() => {
     
       <nav className="navbar">
          <Link to="/dashboard" className="navbar-logo">
-            📘 SocialApp
-         </Link>
+            <img src="/bondhu-logo.jpg" alt="Bondhu" className="navbar-logo-img" />
+             Bondhu
+          </Link>
 
       <button
          className="navbar-hamburger"

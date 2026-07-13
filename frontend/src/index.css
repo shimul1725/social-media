@@ -1306,3 +1306,16 @@ body {
 .shared-post-box .post-header {
   margin-bottom: 8px;
 }
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navbar-logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+}
