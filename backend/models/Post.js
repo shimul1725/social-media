@@ -17,6 +17,11 @@ const postSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    sharedPost: {
+       type: mongoose.Schema.Types.ObjectId,
+       ref: "Post",
+       default: null,
+     },
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
