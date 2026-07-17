@@ -11,9 +11,12 @@ const Feed = () => {
   const [text, setText] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
+  const [videoFile, setVideoFile] = useState(null);
+  const [videoPreview, setVideoPreview] = useState("");
   const [posting, setPosting] = useState(false);
 
   const fileInputRef = useRef(null);
+  const videoInputRef = useRef(null);
 
   const loadFeed = async () => {
     try {
@@ -34,11 +37,25 @@ const Feed = () => {
   }, []);
 
   const handleImageSelect = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
+  const file = e.target.files[0];
+  if (!file) return;
+  setImageFile(file);
+  setImagePreview(URL.createObjectURL(file));
+  removeVideo();
   };
+  const handleVideoSelect = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  setVideoFile(file);
+  setVideoPreview(URL.createObjectURL(file));
+  // A post can only have one media type at a time
+  removeImage();
+};
+
+const removeVideo = () => {
+  setVideoFile(null);
+  setVideoPreview("");
+};
 
   const removeImage = () => {
     setImageFile(null);
@@ -48,14 +65,15 @@ const Feed = () => {
 
   const handlePost = async (e) => {
     e.preventDefault();
-    if (!text.trim() && !imageFile) return;
+    if (!text.trim() && !imageFile && !videoFile) return;
 
     setPosting(true);
     try {
-      const newPost = await createPost(text.trim(), imageFile);
+      const newPost = await createPost(text.trim(), imageFile, videoFile);
       setPosts([newPost, ...posts]);
       setText("");
       removeImage();
+      removeVideo();
     } catch (err) {
       alert(err.response?.data?.message || "পোস্ট করা যায়নি");
     } finally {
@@ -89,6 +107,12 @@ const Feed = () => {
             <button type="button" onClick={removeImage}>✕</button>
           </div>
         )}
+        {videoPreview && (
+            <div className="image-preview-wrapper">
+            <video src={videoPreview} controls className="video-preview" />
+            <button type="button" onClick={removeVideo}>✕</button>
+            </div>
+         )}
 
         <div className="create-post-actions">
           <button
@@ -105,7 +129,22 @@ const Feed = () => {
             style={{ display: "none" }}
             onChange={handleImageSelect}
           />
-          <button type="submit" disabled={posting || (!text.trim() && !imageFile)}>
+           
+           <button
+             type="button"
+             className="attach-image-btn"
+             onClick={() => videoInputRef.current.click()}
+            >
+             🎬 ভিডিও যোগ করুন
+           </button>
+         <input
+             type="file"
+             accept="video/*"
+             ref={videoInputRef}
+             style={{ display: "none" }}
+             onChange={handleVideoSelect}
+          />
+          <button type="submit" disabled={posting || (!text.trim() && !imageFile && !videoFile)}>
             {posting ? "পোস্ট হচ্ছে..." : "পোস্ট করুন"}
           </button>
         </div>

@@ -4,21 +4,22 @@ const cloudinary = require("../config/cloudinary");
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder: "social-media-app", // all uploads go into this folder on Cloudinary
-    allowed_formats: ["jpg", "jpeg", "png", "webp", "gif"],
-    // Cloudinary needs a unique public_id per file, similar to our old filename logic
-    public_id: (req, file) => {
-      const fieldName = file.fieldname; // "avatar", "coverPhoto", or "image"
-      const userId = req.user?._id || "unknown";
-      return `${fieldName}-${userId}-${Date.now()}`;
-    },
+  params: (req, file) => {
+    const isVideo = file.fieldname === "video";
+    return {
+      folder: isVideo ? "social-media-app/videos" : "social-media-app",
+      resource_type: isVideo ? "video" : "image",
+      allowed_formats: isVideo
+        ? ["mp4", "mov", "webm", "avi"]
+        : ["jpg", "jpeg", "png", "webp", "gif"],
+      public_id: `${file.fieldname}-${req.user?._id || "unknown"}-${Date.now()}`,
+    };
   },
 });
 
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB max (covers both images and videos)
 });
 
 module.exports = upload;

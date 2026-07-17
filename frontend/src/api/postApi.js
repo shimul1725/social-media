@@ -1,11 +1,11 @@
 import API from "./axios";
 
-// Create a new post (text and/or image)
-export const createPost = async (text, imageFile) => {
+// Create a new post (text and/or image / videos)
+export const createPost = async (text, imageFile, videoFile) => {
   const formData = new FormData();
   if (text) formData.append("text", text);
   if (imageFile) formData.append("image", imageFile);
-
+  if (videoFile) formData.append("video", videoFile);
   const { data } = await API.post("/posts", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });

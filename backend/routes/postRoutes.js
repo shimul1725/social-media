@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { protect } = require("../middleware/authMiddleware");
 const upload = require("../middleware/uploadMiddleware");
-const uploadVideo = require("../middleware/uploadVideoMiddleware");
 
 const {
   createPost,
@@ -22,17 +21,10 @@ const { addComment, getComments, deleteComment } = require("../controllers/comme
 router.post(
   "/",
   protect,
-  (req, res, next) => {
-    // Use image or video multer middleware depending on which field is sent
-    if (req.headers["content-type"]?.includes("multipart/form-data")) {
-      upload.fields([{ name: "image", maxCount: 1 }])(req, res, (err) => {
-        if (err) return next(err);
-        uploadVideo.fields([{ name: "video", maxCount: 1 }])(req, res, next);
-      });
-    } else {
-      next();
-    }
-  },
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "video", maxCount: 1 },
+  ]),
   createPost
 );
 

@@ -195,6 +195,13 @@ const handleShareClick = async () => {
       {post.image && (
         <img src={getImageUrl(post.image)} alt="post" className="post-image" />
       )}
+      {post.video && (
+        <video
+         src={getImageUrl(post.video)}
+         controls
+         className="post-image"
+       />
+      )}
       {post.sharedPost && (
   <div className="shared-post-box">
     <div className="post-header">

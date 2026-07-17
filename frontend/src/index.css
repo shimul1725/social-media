@@ -1319,3 +1319,9 @@ body {
   border-radius: 8px;
   object-fit: cover;
 }
+.video-preview {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px;
+  display: block;
+}
