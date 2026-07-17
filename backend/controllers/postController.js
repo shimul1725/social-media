@@ -8,16 +8,18 @@ const { emitToUser } = require("../socket");
 const createPost = async (req, res) => {
   try {
     const { text } = req.body;
-    const image = req.file ? req.file.path : "";
+    const image = req.files?.image ? req.files.image[0].path : "";
+    const video = req.files?.video ? req.files.video[0].path : "";
 
-    if (!text && !image) {
-      return res.status(400).json({ message: "Post must have text or an image" });
+    if (!text && !image && !video) {
+      return res.status(400).json({ message: "Post must have text, an image, or a video" });
     }
 
     const post = await Post.create({
       user: req.user._id,
       text: text || "",
       image,
+      video,
     });
 
     const populatedPost = await post.populate("user", "name avatar");
