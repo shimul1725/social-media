@@ -1325,3 +1325,67 @@ body {
   border-radius: 8px;
   display: block;
 }
+/* Friend request buttons - Facebook style */
+.add-friend-btn {
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-friend-btn:hover {
+  background-color: #166fe5;
+}
+
+.add-friend-btn:disabled {
+  background-color: #a3c3f7;
+  cursor: not-allowed;
+}
+
+.request-sent-btn {
+  background-color: #e4e6eb;
+  color: #050505;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: not-allowed;
+}
+
+.accept-friend-btn {
+  background-color: #42b72a;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.accept-friend-btn:hover {
+  background-color: #36a420;
+}
+
+.accept-friend-btn:disabled {
+  background-color: #a8e0a0;
+  cursor: not-allowed;
+}
+
+.friends-btn {
+  background-color: #e4e6eb;
+  color: #050505;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: default;
+}

@@ -8,7 +8,8 @@ const getMyProfile = async (req, res) => {
     const user = await User.findById(req.user._id)
       .select("-password")
       .populate("followers", "name avatar")
-      .populate("following", "name avatar");
+      .populate("following", "name avatar")
+      .populate("friends", "name avatar");
     return res.status(200).json(user);
   } catch (error) {
     console.error(error);
@@ -54,7 +55,8 @@ const getUserProfile = async (req, res) => {
     const user = await User.findById(req.params.id)
       .select("-password")
       .populate("followers", "name avatar")
-      .populate("following", "name avatar");
+      .populate("following", "name avatar")
+      .populate("friends", "name avatar");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

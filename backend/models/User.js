@@ -53,6 +53,14 @@ savedPosts: [
     ref: "Post",
   },
 ],
+friends: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+],
+
+
   },
   
   { timestamps: true }

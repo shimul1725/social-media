@@ -12,6 +12,8 @@ import Inbox from "./pages/Inbox";
 import Notifications from "./pages/Notifications";
 import ChatWindow from "./pages/ChatWindow";
 import Navbar from "./components/Navbar";
+import FriendsList from "./pages/FriendsList";
+import FriendRequests from "./pages/FriendRequests";
 
 function App() {
   return (
@@ -93,6 +95,22 @@ function App() {
               </PrivateRoute>
           }
         />
+        <Route
+          path="/friends/:id"
+          element={
+          <PrivateRoute>
+          <FriendsList />
+          </PrivateRoute>
+         }
+       />
+       <Route
+          path="/friend-requests"
+          element={
+          <PrivateRoute>
+          <FriendRequests />
+          </PrivateRoute>
+         }
+      />
 
       </Routes>
     </>

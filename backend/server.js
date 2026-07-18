@@ -8,6 +8,7 @@ const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
+const friendRoutes = require("./routes/friendRoutes");
 
 // Connect to MongoDB Atlas
 connectDB();
@@ -30,6 +31,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/friends", friendRoutes);
 
 // Health check route
 app.get("/", (req, res) => {
