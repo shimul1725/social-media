@@ -143,37 +143,41 @@ const UserProfile = () => {
           {currentUser?._id !== profile._id && (
             <div className="profile-action-buttons" style={{ display: "flex", gap: "8px", marginTop: "8px", alignItems: "center" }}>
               <button
-                className={isFollowing ? "unfollow-btn" : "follow-btn"}
-                onClick={handleFollowToggle}
-                disabled={actionLoading}
-              >
-                {actionLoading ? "..." : isFollowing ? "আনফলো" : "ফলো করুন"}
-              </button>
+              className={isFollowing ? "unfollow-btn" : "follow-btn"}
+                 onClick={handleFollowToggle}
+                 disabled={actionLoading}
+               >
+               {actionLoading ? "..." : isFollowing ? "আনফলো" : "ফলো করুন"}
+            </button>
 
-              {friendStatus === "none" && (
-                <button className="add-friend-btn" onClick={handleSendFriendRequest} disabled={friendActionLoading}>
-                  {friendActionLoading ? "..." : "+ Add Friend"}
-                </button>
-              )}
+            <Link to={`/chat/${profile._id}`} className="message-btn">
+              💬 Message
+            </Link>
 
-              {friendStatus === "request_sent" && (
-                <button className="request-sent-btn" onClick={handleCancelRequest} disabled={friendActionLoading}>
-                  {friendActionLoading ? "..." : "✕ Cancel Request"}
-                </button>
-              )}
+        {friendStatus === "none" && (
+         <button className="add-friend-btn" onClick={handleSendFriendRequest} disabled={friendActionLoading}>
+         {friendActionLoading ? "..." : "+ Add Friend"}
+        </button>
+        )}
 
-              {friendStatus === "request_received" && (
-                <button className="accept-friend-btn" onClick={handleAcceptFriendRequest} disabled={friendActionLoading}>
-                  {friendActionLoading ? "..." : "✓ Accept Request"}
-                </button>
-              )}
+        {friendStatus === "request_sent" && (
+          <button className="request-sent-btn" onClick={handleCancelRequest} disabled={friendActionLoading}>
+          {friendActionLoading ? "..." : "✕ Cancel Request"}
+        </button>
+        )}
 
-              {friendStatus === "friends" && (
-                <button className="friends-btn" onClick={handleUnfriend} disabled={friendActionLoading}>
-                  {friendActionLoading ? "..." : "✓ Friends ▾"}
-                </button>
-              )}
-            </div>
+         {friendStatus === "request_received" && (
+           <button className="accept-friend-btn" onClick={handleAcceptFriendRequest} disabled={friendActionLoading}>
+          {friendActionLoading ? "..." : "✓ Accept Request"}
+         </button>
+        )}
+
+        {friendStatus === "friends" && (
+        <button className="friends-btn" onClick={handleUnfriend} disabled={friendActionLoading}>
+         {friendActionLoading ? "..." : "✓ Friends ▾"}
+        </button>
+       )}
+    </div>
           )}
         </div>
       </div>

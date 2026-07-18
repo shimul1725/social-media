@@ -32,7 +32,7 @@ const ChatWindow = () => {
       .finally(() => setLoading(false));
   }, [userId]);
 
-  // Listen for real-time incoming messages / typing indicators
+  // Listen for real-time incoming messages / typing indicators / seen receipts
   useEffect(() => {
     if (!socket) return;
 
@@ -50,16 +50,28 @@ const ChatWindow = () => {
       if (senderId === userId) setOtherUserTyping(false);
     };
 
+    const handleMessagesSeen = ({ seenBy }) => {
+      if (seenBy !== userId) return;
+      setMessages((prev) =>
+        prev.map((m) => {
+          const isMine = (m.senderId || m.sender?._id) === me._id;
+          return isMine ? { ...m, seen: true } : m;
+        })
+      );
+    };
+
     socket.on("receiveMessage", handleReceive);
     socket.on("userTyping", handleTyping);
     socket.on("userStopTyping", handleStopTyping);
+    socket.on("messagesSeen", handleMessagesSeen);
 
     return () => {
       socket.off("receiveMessage", handleReceive);
       socket.off("userTyping", handleTyping);
       socket.off("userStopTyping", handleStopTyping);
+      socket.off("messagesSeen", handleMessagesSeen);
     };
-  }, [socket, userId]);
+  }, [socket, userId, me._id]);
 
   // Auto-scroll to the latest message
   useEffect(() => {
@@ -107,6 +119,16 @@ const ChatWindow = () => {
   if (loading) return <p className="info-msg">লোড হচ্ছে...</p>;
   if (!otherUser) return <p className="info-msg">ইউজার খুঁজে পাওয়া যায়নি</p>;
 
+  // Find the index of the last message that I sent, so we only show
+  // the seen/delivered indicator on the most recent one (like Messenger does)
+  const lastMineIndex = (() => {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      const isMine = (messages[i].senderId || messages[i].sender?._id) === me._id;
+      if (isMine) return i;
+    }
+    return -1;
+  })();
+
   return (
     <div className="chat-window">
       <div className="chat-header">
@@ -125,14 +147,16 @@ const ChatWindow = () => {
       </div>
 
       <div className="chat-messages">
-        {messages.map((msg) => {
+        {messages.map((msg, idx) => {
           const isMine = (msg.senderId || msg.sender?._id) === me._id;
           return (
-            <div
-              key={msg._id}
-              className={isMine ? "chat-bubble mine" : "chat-bubble theirs"}
-            >
+            <div key={msg._id} className={isMine ? "chat-bubble mine" : "chat-bubble theirs"}>
               {msg.text}
+              {isMine && idx === lastMineIndex && (
+                <span className={msg.seen ? "seen-indicator seen" : "seen-indicator"}>
+                  {msg.seen ? "✓✓ দেখা হয়েছে" : "✓ পাঠানো হয়েছে"}
+                </span>
+              )}
             </div>
           );
         })}

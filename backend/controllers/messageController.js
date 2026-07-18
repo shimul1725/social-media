@@ -1,4 +1,5 @@
 const Message = require("../models/Message");
+const { emitToUser } = require("../socket");
 
 // @desc    Send a message
 // @route   POST /api/messages
@@ -34,6 +35,13 @@ const getConversation = async (req, res) => {
     const myId = req.user._id;
     const otherId = req.params.userId;
 
+    // Mark all messages sent TO me in this conversation as seen (before fetching,
+    // so the response already reflects the updated seen status)
+    const result = await Message.updateMany(
+      { sender: otherId, receiver: myId, seen: false },
+      { seen: true }
+    );
+
     const messages = await Message.find({
       $or: [
         { sender: myId, receiver: otherId },
@@ -43,11 +51,10 @@ const getConversation = async (req, res) => {
       .populate("sender", "name avatar")
       .sort({ createdAt: 1 });
 
-    // Mark all messages sent TO me in this conversation as seen
-    await Message.updateMany(
-      { sender: otherId, receiver: myId, seen: false },
-      { seen: true }
-    );
+    // If we just marked messages as seen, tell the original sender in real-time
+    if (result.modifiedCount > 0) {
+      emitToUser(otherId, "messagesSeen", { seenBy: myId.toString() });
+    }
 
     return res.status(200).json(messages);
   } catch (error) {
