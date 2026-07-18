@@ -120,10 +120,13 @@ const Profile = () => {
         <div className="profile-info">
           <h2>{profile.name}</h2>
           <p className="profile-email">{profile.email}</p>
-          <div className="follow-counts">
-            <span><strong>{profile.followers.length}</strong> ফলোয়ার</span>
-            <span><strong>{profile.following.length}</strong> ফলোয়িং</span>
-          </div>
+           <div className="follow-counts">
+               <span><strong>{profile.followers.length}</strong> ফলোয়ার</span>
+               <span><strong>{profile.following.length}</strong> ফলোয়িং</span>
+               <Link to={`/friends/${profile._id}`} style={{ textDecoration: "none", color: "inherit" }}>
+                 <span><strong>{profile.friends?.length || 0}</strong> Friends</span>
+               </Link>
+            </div>
         </div>
       </div>
 

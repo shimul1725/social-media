@@ -5,6 +5,7 @@ import { fetchMyProfile } from "../api/userApi";
 import { fetchNotifications } from "../api/notificationApi";
 import { useSocket } from "../context/SocketContext";
 import { getImageUrl } from "../utils/getImageUrl";
+import { fetchPendingFriendRequests } from "../api/friendApi";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -12,6 +13,7 @@ const Navbar = () => {
   const [avatar, setAvatar] = useState("");
   const { socket } = useSocket();
   const [unseenCount, setUnseenCount] = useState(0);
+  const [pendingFriendCount, setPendingFriendCount] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -38,14 +40,21 @@ const Navbar = () => {
 }, [user]);
 
 useEffect(() => {
+  if (!user) return;
+  fetchPendingFriendRequests()
+    .then((data) => setPendingFriendCount(data.length))
+    .catch(() => {});
+}, [user]);
+
+useEffect(() => {
   if (!socket) return;
-
-  const handleNewNotification = () => {
+  const handleNewNotification = (notification) => {
     setUnseenCount((prev) => prev + 1);
+    if (notification.type === "friend_request") {
+      setPendingFriendCount((prev) => prev + 1);
+    }
   };
-
   socket.on("newNotification", handleNewNotification);
-
   return () => {
     socket.off("newNotification", handleNewNotification);
   };
@@ -80,6 +89,16 @@ useEffect(() => {
   <Link to="/saved" onClick={() => setMenuOpen(false)}>🔖 সেভ করা</Link>
   <Link to="/inbox" onClick={() => setMenuOpen(false)}>💬 মেসেজ</Link>
   <Link to="/search" onClick={() => setMenuOpen(false)}>🔍 খুঁজুন</Link>
+  <Link
+    to="/friend-requests"
+    className="navbar-bell"
+    onClick={() => {
+    setMenuOpen(false);
+   }}
+  >
+    👥
+    {pendingFriendCount > 0 && <span className="notification-badge">{pendingFriendCount}</span>}
+ </Link>
   <Link
     to="/notifications"
     className="navbar-bell"

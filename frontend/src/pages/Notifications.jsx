@@ -7,11 +7,15 @@ const messageFor = (n) => {
   if (n.type === "follow") return "আপনাকে ফলো করেছে";
   if (n.type === "like") return "আপনার পোস্টে লাইক দিয়েছে";
   if (n.type === "comment") return "আপনার পোস্টে কমেন্ট করেছে";
+  if (n.type === "friend_request") return "আপনাকে ফ্রেন্ড রিকোয়েস্ট পাঠিয়েছে";
+  if (n.type === "friend_accept") return "আপনার ফ্রেন্ড রিকোয়েস্ট একসেপ্ট করেছে";
   return "";
 };
 
 const linkFor = (n) => {
   if (n.type === "follow") return `/users/${n.sender._id}`;
+  if (n.type === "friend_request") return "/friend-requests";
+  if (n.type === "friend_accept") return `/users/${n.sender._id}`;
   return "/feed"; // like/comment → simplest place to see the post is the feed
 };
 
