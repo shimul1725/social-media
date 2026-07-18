@@ -1389,3 +1389,240 @@ body {
   font-size: 14px;
   cursor: default;
 }
+.dashboard-feed-section {
+  margin-top: 20px;
+}
+/* ============ Dashboard Professional Polish ============ */
+.home-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 20px 16px 60px;
+}
+
+.welcome-banner {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  margin-bottom: 20px;
+}
+
+.welcome-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.55) 20%, rgba(0, 0, 0, 0.15) 100%);
+}
+
+.welcome-avatar {
+  position: relative;
+  z-index: 1;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  object-fit: cover;
+}
+
+.welcome-text {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+
+.welcome-text h2 {
+  margin: 0 0 4px;
+  font-size: 24px;
+}
+
+.welcome-text p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 14px;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.stat-card,
+.quick-link-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.stat-card {
+  padding: 18px;
+  text-align: center;
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 24px;
+  color: #4f8ef7;
+  margin-bottom: 2px;
+}
+
+.stat-card span {
+  font-size: 13px;
+  color: #65676b;
+}
+.stat-card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
+}
+
+.stat-card:hover {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.quick-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.quick-link-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.quick-link-card:hover {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.quick-link-icon {
+  font-size: 22px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #eef2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.quick-link-card strong {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+.quick-link-card p {
+  margin: 0;
+  font-size: 13px;
+  color: #65676b;
+}
+
+.dashboard-feed-section {
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid #e4e6eb;
+}
+
+/* Feed / create-post box polish */
+.create-post-box {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.create-post-top {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.create-post-top textarea {
+  flex: 1;
+  border: none;
+  background: #f0f2f5;
+  border-radius: 18px;
+  padding: 10px 16px;
+  resize: none;
+  min-height: 42px;
+  font-size: 15px;
+  outline: none;
+}
+
+.post-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.create-post-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e4e6eb;
+}
+
+.attach-image-btn {
+  background: none;
+  border: none;
+  color: #65676b;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.attach-image-btn:hover {
+  background: #f0f2f5;
+}
+
+.create-post-actions button[type="submit"] {
+  background: #4f8ef7;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.create-post-actions button[type="submit"]:disabled {
+  background: #a3c3f7;
+  cursor: not-allowed;
+}
+
+.feed-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+/* Fix width mismatch — Feed was originally a standalone page,
+   now nested inside Dashboard, so reset its own width/margin/padding */
+.dashboard-feed-section .feed-page {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}

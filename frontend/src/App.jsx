@@ -14,6 +14,7 @@ import ChatWindow from "./pages/ChatWindow";
 import Navbar from "./components/Navbar";
 import FriendsList from "./pages/FriendsList";
 import FriendRequests from "./pages/FriendRequests";
+import ConnectionsList from "./pages/ConnectionsList";
 
 function App() {
   return (
@@ -102,6 +103,14 @@ function App() {
           <FriendsList />
           </PrivateRoute>
          }
+       />
+       <Route
+         path="/connections/:type/:id"
+         element={
+         <PrivateRoute>
+         <ConnectionsList />
+         </PrivateRoute>
+        }
        />
        <Route
           path="/friend-requests"

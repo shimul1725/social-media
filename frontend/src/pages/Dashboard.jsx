@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import { fetchMyProfile } from "../api/userApi";
 import { getImageUrl } from "../utils/getImageUrl";
+import Feed from "./Feed";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -38,18 +39,22 @@ const Dashboard = () => {
   </div>
 </div>
 
-      {profile && (
-        <div className="stats-row">
-          <div className="stat-card">
-            <strong>{profile.followers?.length || 0}</strong>
-            <span>ফলোয়ার</span>
-          </div>
-          <div className="stat-card">
-            <strong>{profile.following?.length || 0}</strong>
-            <span>ফলোয়িং</span>
-          </div>
-        </div>
-      )}
+    {profile && (
+  <div className="stats-row">
+    <Link to={`/connections/followers/${profile._id}`} className="stat-card">
+      <strong>{profile.followers?.length || 0}</strong>
+      <span>Followers</span>
+    </Link>
+    <Link to={`/connections/following/${profile._id}`} className="stat-card">
+      <strong>{profile.following?.length || 0}</strong>
+      <span>Following</span>
+    </Link>
+    <Link to={`/friends/${profile._id}`} className="stat-card">
+      <strong>{profile.friends?.length || 0}</strong>
+      <span>Friends</span>
+    </Link>
+  </div>
+)}
 
       <div className="quick-links">
         <Link to="/profile" className="quick-link-card">
@@ -69,9 +74,9 @@ const Dashboard = () => {
         </Link>
       </div>
 
-      <div className="coming-soon-card">
-        <p>🚧 News Feed, Post, এবং Chat শীঘ্রই আসছে (পরবর্তী Phase)</p>
-      </div>
+         <div className="dashboard-feed-section">
+          <Feed />
+        </div>
     </div>
   );
 };
