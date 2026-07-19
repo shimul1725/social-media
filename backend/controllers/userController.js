@@ -62,6 +62,27 @@ const getUserProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    const isOwner = user._id.toString() === req.user._id.toString();
+    const isFriend = user.friends.some(
+      (f) => f._id.toString() === req.user._id.toString()
+    );
+
+    // If the account is private and the viewer is not the owner or a friend,
+    // return a limited profile without bio details
+    if (user.isPrivate && !isOwner && !isFriend) {
+      return res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        avatar: user.avatar,
+        coverPhoto: user.coverPhoto,
+        isPrivate: true,
+        restricted: true,
+        followers: user.followers,
+        following: user.following,
+        friends: user.friends,
+      });
+    }
+
     return res.status(200).json(user);
   } catch (error) {
     console.error(error);
@@ -129,7 +150,21 @@ const searchUsers = async (req, res) => {
     return res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-
+// @desc    Update privacy setting (public/private account)
+// @route   PUT /api/users/privacy
+// @access  Private
+const updatePrivacy = async (req, res) => {
+  try {
+    const { isPrivate } = req.body;
+    const user = await User.findById(req.user._id);
+    user.isPrivate = !!isPrivate;
+    await user.save();
+    return res.status(200).json({ isPrivate: user.isPrivate });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 module.exports = {
   getMyProfile,
   getUserProfile,
@@ -137,4 +172,5 @@ module.exports = {
   updateAvatar,
   updateCoverPhoto,
   searchUsers,
+  updatePrivacy,
 };

@@ -7,6 +7,7 @@ const {
   getMyProfile,
   getUserProfile,
   updateProfile,
+  updatePrivacy,
   updateAvatar,
   updateCoverPhoto,
   searchUsers,
@@ -17,8 +18,10 @@ const { followUser, unfollowUser } = require("../controllers/followController");
 // Profile
 router.get("/profile/me", protect, getMyProfile);
 router.put("/profile", protect, updateProfile);
+router.put("/privacy", protect, updatePrivacy);
 router.put("/avatar", protect, upload.single("avatar"), updateAvatar);
 router.put("/cover", protect, upload.single("coverPhoto"), updateCoverPhoto);
+
 
 // Search (must come before "/:id" so "search" isn't treated as an ID)
 router.get("/search", protect, searchUsers);

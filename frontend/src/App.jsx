@@ -15,6 +15,7 @@ import Navbar from "./components/Navbar";
 import FriendsList from "./pages/FriendsList";
 import FriendRequests from "./pages/FriendRequests";
 import ConnectionsList from "./pages/ConnectionsList";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -119,6 +120,14 @@ function App() {
           <FriendRequests />
           </PrivateRoute>
          }
+      />
+      <Route
+            path="/settings"
+            element={
+            <PrivateRoute>
+           <Settings />
+          </PrivateRoute>
+        }
       />
 
       </Routes>

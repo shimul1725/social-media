@@ -81,4 +81,58 @@ const getMe = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getMe };
+// @desc    Change password
+// @route   PUT /api/auth/change-password
+// @access  Private
+const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: "বর্তমান ও নতুন পাসওয়ার্ড দিন" });
+    }
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: "নতুন পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে" });
+    }
+
+    const user = await User.findById(req.user._id).select("+password");
+    if (!user || !(await user.matchPassword(currentPassword))) {
+      return res.status(401).json({ message: "বর্তমান পাসওয়ার্ড ভুল" });
+    }
+
+    user.password = newPassword; // pre-save hook automatically hashes it
+    await user.save();
+
+    return res.status(200).json({ message: "পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// @desc    Delete own account (requires password confirmation)
+// @route   DELETE /api/auth/delete-account
+// @access  Private
+const deleteAccount = async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    if (!password) {
+      return res.status(400).json({ message: "নিশ্চিত করতে পাসওয়ার্ড দিন" });
+    }
+
+    const user = await User.findById(req.user._id).select("+password");
+    if (!user || !(await user.matchPassword(password))) {
+      return res.status(401).json({ message: "পাসওয়ার্ড ভুল" });
+    }
+
+    await User.findByIdAndDelete(req.user._id);
+
+    return res.status(200).json({ message: "অ্যাকাউন্ট মুছে ফেলা হয়েছে" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+module.exports = { registerUser, loginUser, getMe, changePassword, deleteAccount };

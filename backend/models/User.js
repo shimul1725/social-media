@@ -59,6 +59,10 @@ friends: [
     ref: "User",
   },
 ],
+isPrivate: {
+  type: Boolean,
+  default: false,
+},
 
 
   },
