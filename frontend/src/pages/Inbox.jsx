@@ -39,20 +39,20 @@ const Inbox = () => {
     return () => clearTimeout(timer);
   }, [query]);
 
-  if (loading) return <p className="info-msg">লোড হচ্ছে...</p>;
+  if (loading) return <p className="info-msg">Loading...</p>;
 
   const showingSearch = query.trim().length > 0;
 
   return (
     <div className="inbox-page">
-      <h2>মেসেজ</h2>
+      <h2>Message</h2>
 
       <div className="inbox-search-wrapper">
           <span className="inbox-search-icon">🔍</span>
          <input
             type="text"
             className="inbox-search-input"
-            placeholder="কাউকে খুঁজে মেসেজ পাঠান..."
+            placeholder="Search and send a message..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
          />
@@ -60,9 +60,9 @@ const Inbox = () => {
 
       {showingSearch ? (
         searching ? (
-          <p className="info-msg">খুঁজছি...</p>
+          <p className="info-msg">Searching...</p>
         ) : searchResults.length === 0 ? (
-          <p className="info-msg">কেউ খুঁজে পাওয়া যায়নি</p>
+          <p className="info-msg">No one was found!</p>
         ) : (
           <div className="conversations-list">
             {searchResults.map((person) => (
@@ -73,7 +73,7 @@ const Inbox = () => {
                 </div>
                 <div className="conversation-info">
                   <strong>{person.name}</strong>
-                  <p>মেসেজ পাঠাতে ক্লিক করুন</p>
+                  <p>Click to send a message.</p>
                 </div>
               </Link>
             ))}
@@ -81,7 +81,7 @@ const Inbox = () => {
         )
       ) : conversations.length === 0 ? (
         <p className="info-msg">
-          এখনো কোনো কথোপকথন নেই। উপরে খুঁজে কারো সাথে মেসেজ শুরু করুন।
+          No conversations yet. Search above to start messaging someone.
         </p>
       ) : (
         <div className="conversations-list">

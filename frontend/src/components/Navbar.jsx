@@ -86,7 +86,6 @@ const Navbar = () => {
       <div className={menuOpen ? "navbar-links open" : "navbar-links"}>
         <Link to="/dashboard" onClick={() => setMenuOpen(false)}>হোম</Link>
         <Link to="/feed" onClick={() => setMenuOpen(false)}>📰 ফিড</Link>
-        <Link to="/saved" onClick={() => setMenuOpen(false)}>🔖 সেভ করা</Link>
         <Link to="/inbox" onClick={() => setMenuOpen(false)}>💬 মেসেজ</Link>
         <Link to="/search" onClick={() => setMenuOpen(false)}>🔍 খুঁজুন</Link>
         <Link
@@ -96,7 +95,7 @@ const Navbar = () => {
             setMenuOpen(false);
           }}
         >
-          👥
+          👥 Friends
           {pendingFriendCount > 0 && <span className="notification-badge">{pendingFriendCount}</span>}
         </Link>
         <Link
@@ -131,6 +130,15 @@ const Navbar = () => {
                 }}
               >
                 👤 প্রোফাইল দেখুন
+              </Link>
+              <Link
+                 to="/saved"
+                 onClick={() => {
+                   setProfileMenuOpen(false);
+                   setMenuOpen(false);
+                  }}
+               >
+                🔖 সেভ করা পোস্ট
               </Link>
               <Link
                 to="/settings"

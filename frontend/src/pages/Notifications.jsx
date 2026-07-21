@@ -4,11 +4,11 @@ import { fetchNotifications, markNotificationsSeen } from "../api/notificationAp
 import { getImageUrl } from "../utils/getImageUrl";
 
 const messageFor = (n) => {
-  if (n.type === "follow") return "আপনাকে ফলো করেছে";
-  if (n.type === "like") return "আপনার পোস্টে লাইক দিয়েছে";
-  if (n.type === "comment") return "আপনার পোস্টে কমেন্ট করেছে";
-  if (n.type === "friend_request") return "আপনাকে ফ্রেন্ড রিকোয়েস্ট পাঠিয়েছে";
-  if (n.type === "friend_accept") return "আপনার ফ্রেন্ড রিকোয়েস্ট একসেপ্ট করেছে";
+  if (n.type === "follow") return "Followed you";
+  if (n.type === "like") return "Liked your post";
+  if (n.type === "comment") return "Commented on your post";
+  if (n.type === "friend_request") return "Sent you a friend request.";
+  if (n.type === "friend_accept") return "They have accepted your friend request.";
   return "";
 };
 
@@ -33,14 +33,14 @@ const Notifications = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p className="info-msg">লোড হচ্ছে...</p>;
+  if (loading) return <p className="info-msg">Loading...</p>;
 
   return (
     <div className="notifications-page">
-      <h2>নোটিফিকেশন</h2>
+      <h2>Notification</h2>
 
       {notifications.length === 0 ? (
-        <p className="info-msg">কোনো নোটিফিকেশন নেই।</p>
+        <p className="info-msg">No notifications !</p>
       ) : (
         <div className="notifications-list">
           {notifications.map((n) => (

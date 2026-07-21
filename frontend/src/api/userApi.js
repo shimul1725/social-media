@@ -55,3 +55,8 @@ export const unfollowUser = async (userId) => {
   const { data } = await API.put(`/users/unfollow/${userId}`);
   return data;
 };
+// Update extended "About" info (work, education, location, relationship, phone)
+export const updateAboutInfo = async (fields) => {
+  const { data } = await API.put("/users/profile", fields);
+  return data;
+};

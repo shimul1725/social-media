@@ -63,6 +63,30 @@ isPrivate: {
   type: Boolean,
   default: false,
 },
+work: {
+  type: String,
+  default: "",
+},
+education: {
+  type: String,
+  default: "",
+},
+livesIn: {
+  type: String,
+  default: "",
+},
+from: {
+  type: String,
+  default: "",
+},
+relationshipStatus: {
+  type: String,
+  default: "",
+},
+phone: {
+  type: String,
+  default: "",
+},
 
 
   },

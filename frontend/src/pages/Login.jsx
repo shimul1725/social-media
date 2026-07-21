@@ -21,7 +21,7 @@ const Login = () => {
       await login(form.email, form.password);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "লগইন ব্যর্থ হয়েছে");
+      setError(err.response?.data?.message || "Login failed");
     } finally {
       setSubmitting(false);
     }
@@ -30,14 +30,14 @@ const Login = () => {
   return (
     <div className="auth-container">
       <form className="auth-card" onSubmit={handleSubmit}>
-        <h2>লগইন করুন</h2>
+        <h2>Login</h2>
 
         {error && <p className="error-msg">{error}</p>}
 
         <input
           type="email"
           name="email"
-          placeholder="ইমেইল"
+          placeholder="Email"
           value={form.email}
           onChange={handleChange}
           required
@@ -45,18 +45,18 @@ const Login = () => {
         <input
           type="password"
           name="password"
-          placeholder="পাসওয়ার্ড"
+          placeholder="Password"
           value={form.password}
           onChange={handleChange}
           required
         />
 
         <button type="submit" disabled={submitting}>
-          {submitting ? "প্রসেসিং..." : "লগইন"}
+          {submitting ? "Processing..." : "Login"}
         </button>
 
         <p className="switch-link">
-          অ্যাকাউন্ট নেই? <Link to="/register">রেজিস্টার করুন</Link>
+          Don't have an account? <Link to="/register">Register</Link>
         </p>
       </form>
     </div>

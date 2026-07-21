@@ -34,8 +34,8 @@ const Dashboard = () => {
     className="welcome-avatar"
   />
   <div className="welcome-text">
-    <h2>স্বাগতম, {user?.name} 👋</h2>
-    <p>{profile?.bio || "আজকের দিনটা কেমন যাচ্ছে?"}</p>
+    <h2>Welcome, {user?.name} 👋</h2>
+    <p>{profile?.bio || "How is your day going?"}</p>
   </div>
 </div>
 
@@ -60,16 +60,16 @@ const Dashboard = () => {
         <Link to="/profile" className="quick-link-card">
           <span className="quick-link-icon">👤</span>
           <div>
-            <strong>আমার প্রোফাইল</strong>
-            <p>প্রোফাইল দেখুন ও এডিট করুন</p>
+            <strong>My Profile</strong>
+            <p>View and Edit Profile</p>
           </div>
         </Link>
 
         <Link to="/search" className="quick-link-card">
           <span className="quick-link-icon">🔍</span>
           <div>
-            <strong>মানুষ খুঁজুন</strong>
-            <p>নতুন বন্ধু খুঁজে ফলো করুন</p>
+            <strong>Find people</strong>
+            <p>Find and follow new friends</p>
           </div>
         </Link>
       </div>

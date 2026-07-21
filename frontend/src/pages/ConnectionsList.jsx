@@ -21,7 +21,7 @@ const ConnectionsList = () => {
         const data = await fetchUserProfile(id);
         setPeople(data[type] || []);
       } catch (err) {
-        setMessage("লিস্ট লোড করা যায়নি");
+        setMessage("The list could not be loaded.");
       } finally {
         setLoading(false);
       }
@@ -29,7 +29,7 @@ const ConnectionsList = () => {
     load();
   }, [id, type]);
 
-  if (loading) return <p style={{ textAlign: "center", marginTop: 50 }}>লোড হচ্ছে...</p>;
+  if (loading) return <p style={{ textAlign: "center", marginTop: 50 }}>Loading...</p>;
 
   return (
     <div className="profile-page">
@@ -40,7 +40,7 @@ const ConnectionsList = () => {
       {message && <p className="info-msg">{message}</p>}
 
       {people.length === 0 ? (
-        <p style={{ padding: "20px" }}>এখনো কেউ নাই।</p>
+        <p style={{ padding: "20px" }}>There is no one here yet.</p>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "20px" }}>
           {people.map((person) => (
@@ -70,7 +70,7 @@ const ConnectionsList = () => {
       )}
 
       <div className="profile-nav-links" style={{ padding: "0 20px 20px" }}>
-        <Link to="/dashboard">⬅ ড্যাশবোর্ডে ফিরুন</Link>
+        <Link to="/dashboard">⬅ Return Dashboard</Link>
       </div>
     </div>
   );

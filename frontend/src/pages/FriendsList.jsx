@@ -16,7 +16,7 @@ const FriendsList = () => {
         const data = await fetchFriendsListByUserId(id);
         setFriends(data);
       } catch (err) {
-        setMessage("ফ্রেন্ড লিস্ট লোড করা যায়নি");
+        setMessage("Could not load the friend list");
       } finally {
         setLoading(false);
       }
@@ -24,7 +24,7 @@ const FriendsList = () => {
     loadFriends();
   }, [id]);
 
-  if (loading) return <p style={{ textAlign: "center", marginTop: 50 }}>লোড হচ্ছে...</p>;
+  if (loading) return <p style={{ textAlign: "center", marginTop: 50 }}>Loading...</p>;
 
   return (
     <div className="profile-page">
@@ -33,7 +33,7 @@ const FriendsList = () => {
       {message && <p className="info-msg">{message}</p>}
 
       {friends.length === 0 ? (
-        <p style={{ padding: "20px" }}>এখনো কোনো ফ্রেন্ড নাই।</p>
+        <p style={{ padding: "20px" }}>No friends yet..!</p>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "20px" }}>
           {friends.map((friend) => (
@@ -63,7 +63,7 @@ const FriendsList = () => {
       )}
 
       <div className="profile-nav-links" style={{ padding: "0 20px 20px" }}>
-        <Link to="/dashboard">⬅ ড্যাশবোর্ডে ফিরুন</Link>
+        <Link to="/dashboard">⬅ Return to Dashboard</Link>
       </div>
     </div>
   );

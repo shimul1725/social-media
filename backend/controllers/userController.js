@@ -22,7 +22,16 @@ const getMyProfile = async (req, res) => {
 // @access  Private
 const updateProfile = async (req, res) => {
   try {
-    const { name, bio } = req.body;
+    const {
+      name,
+      bio,
+      work,
+      education,
+      livesIn,
+      from,
+      relationshipStatus,
+      phone,
+    } = req.body;
 
     const user = await User.findById(req.user._id);
     if (!user) {
@@ -31,6 +40,12 @@ const updateProfile = async (req, res) => {
 
     if (name !== undefined) user.name = name;
     if (bio !== undefined) user.bio = bio;
+    if (work !== undefined) user.work = work;
+    if (education !== undefined) user.education = education;
+    if (livesIn !== undefined) user.livesIn = livesIn;
+    if (from !== undefined) user.from = from;
+    if (relationshipStatus !== undefined) user.relationshipStatus = relationshipStatus;
+    if (phone !== undefined) user.phone = phone;
 
     await user.save();
 
@@ -41,6 +56,12 @@ const updateProfile = async (req, res) => {
       bio: user.bio,
       avatar: user.avatar,
       coverPhoto: user.coverPhoto,
+      work: user.work,
+      education: user.education,
+      livesIn: user.livesIn,
+      from: user.from,
+      relationshipStatus: user.relationshipStatus,
+      phone: user.phone,
     });
   } catch (error) {
     console.error(error);

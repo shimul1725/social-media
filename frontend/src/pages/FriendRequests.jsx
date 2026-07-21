@@ -15,7 +15,7 @@ const FriendRequests = () => {
       const { data } = await API.get("/friends/requests");
       setRequests(data);
     } catch (err) {
-      setMessage("রিকোয়েস্ট লোড করা যায়নি");
+      setMessage("The request could not be loaded.");
     } finally {
       setLoading(false);
     }
@@ -31,7 +31,7 @@ const FriendRequests = () => {
       await API.put(`/friends/accept/${requestId}`);
       setRequests((prev) => prev.filter((r) => r._id !== requestId));
     } catch (err) {
-      setMessage(err.response?.data?.message || "একসেপ্ট করা যায়নি");
+      setMessage(err.response?.data?.message || "It could not be accepted.");
     } finally {
       setActionLoadingId(null);
     }
@@ -43,13 +43,13 @@ const FriendRequests = () => {
       await API.delete(`/friends/reject/${requestId}`);
       setRequests((prev) => prev.filter((r) => r._id !== requestId));
     } catch (err) {
-      setMessage(err.response?.data?.message || "ডিলিট করা যায়নি");
+      setMessage(err.response?.data?.message || "Could not be deleted.");
     } finally {
       setActionLoadingId(null);
     }
   };
 
-  if (loading) return <p style={{ textAlign: "center", marginTop: 50 }}>লোড হচ্ছে...</p>;
+  if (loading) return <p style={{ textAlign: "center", marginTop: 50 }}>Loading...</p>;
 
   return (
     <div className="profile-page" style={{ padding: "20px" }}>
@@ -58,7 +58,7 @@ const FriendRequests = () => {
       {message && <p className="info-msg">{message}</p>}
 
       {requests.length === 0 ? (
-        <p>এই মুহূর্তে কোনো ফ্রেন্ড রিকোয়েস্ট নাই।</p>
+        <p>There are no friend requests at the moment.</p>
       ) : (
         <div
           style={{
@@ -133,7 +133,7 @@ const FriendRequests = () => {
       )}
 
       <div className="profile-nav-links" style={{ marginTop: "20px" }}>
-        <Link to="/dashboard">⬅ ড্যাশবোর্ডে ফিরুন</Link>
+        <Link to="/dashboard">⬅ Return to dashboard</Link>
       </div>
     </div>
   );

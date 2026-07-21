@@ -75,7 +75,7 @@ const removeVideo = () => {
       removeImage();
       removeVideo();
     } catch (err) {
-      alert(err.response?.data?.message || "পোস্ট করা যায়নি");
+      alert(err.response?.data?.message || "Could not be posted.");
     } finally {
       setPosting(false);
     }
@@ -95,7 +95,7 @@ const removeVideo = () => {
         <div className="create-post-top">
           <img src={getImageUrl(myAvatar)} alt="me" className="post-avatar" />
           <textarea
-            placeholder="আপনার মনে কী চলছে?"
+            placeholder="What is on your mind?"
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
@@ -120,7 +120,7 @@ const removeVideo = () => {
             className="attach-image-btn"
             onClick={() => fileInputRef.current.click()}
           >
-            🖼️ ছবি যোগ করুন
+            🖼️ Image
           </button>
           <input
             type="file"
@@ -135,7 +135,7 @@ const removeVideo = () => {
              className="attach-image-btn"
              onClick={() => videoInputRef.current.click()}
             >
-             🎬 ভিডিও যোগ করুন
+             🎬 Video
            </button>
          <input
              type="file"
@@ -145,15 +145,15 @@ const removeVideo = () => {
              onChange={handleVideoSelect}
           />
           <button type="submit" disabled={posting || (!text.trim() && !imageFile && !videoFile)}>
-            {posting ? "পোস্ট হচ্ছে..." : "পোস্ট করুন"}
+            {posting ? "Posting..." : "Post Now"}
           </button>
         </div>
       </form>
 
       {loading ? (
-        <p className="info-msg">লোড হচ্ছে...</p>
+        <p className="info-msg">Loading...</p>
       ) : posts.length === 0 ? (
-        <p className="info-msg">এখনো কোনো পোস্ট নেই। প্রথম পোস্টটা আপনিই করুন!</p>
+        <p className="info-msg">No posts yet. Create the first one!</p>
       ) : (
         posts.map((post) => (
           <PostCard

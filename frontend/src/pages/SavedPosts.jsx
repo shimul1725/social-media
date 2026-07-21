@@ -32,13 +32,13 @@ const SavedPosts = () => {
 
   return (
     <div className="feed-page">
-      <h2>সেভ করা পোস্ট</h2>
+      <h2>Saved Posts</h2>
 
       {loading ? (
-        <p className="info-msg">লোড হচ্ছে...</p>
+        <p className="info-msg">Loading...</p>
       ) : posts.length === 0 ? (
         <p className="info-msg">
-          এখনো কোনো পোস্ট সেভ করা হয়নি। কোনো পোস্টের "সেভ করুন" বাটনে ক্লিক করুন।
+          No posts have been saved yet. Click the "Save" button on any post.
         </p>
       ) : (
         posts.map((post) => (
@@ -51,7 +51,7 @@ const SavedPosts = () => {
         ))
       )}
 
-      <Link to="/feed" className="back-link">⬅ ফিডে ফিরুন</Link>
+      <Link to="/feed" className="back-link">⬅ Return To Feed</Link>
     </div>
   );
 };

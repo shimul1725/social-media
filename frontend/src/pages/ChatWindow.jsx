@@ -112,12 +112,12 @@ const ChatWindow = () => {
 
       socket?.emit("stopTyping", { senderId: me._id, receiverId: userId });
     } catch (err) {
-      alert(err.response?.data?.message || "মেসেজ পাঠানো যায়নি");
+      alert(err.response?.data?.message || "Message could not be sent.");
     }
   };
 
-  if (loading) return <p className="info-msg">লোড হচ্ছে...</p>;
-  if (!otherUser) return <p className="info-msg">ইউজার খুঁজে পাওয়া যায়নি</p>;
+  if (loading) return <p className="info-msg">Loading...</p>;
+  if (!otherUser) return <p className="info-msg">User not found!</p>;
 
   // Find the index of the last message that I sent, so we only show
   // the seen/delivered indicator on the most recent one (like Messenger does)
@@ -139,9 +139,9 @@ const ChatWindow = () => {
           <p className="chat-status">
             {onlineUsers.includes(userId)
               ? otherUserTyping
-                ? "টাইপ করছে..."
-                : "অনলাইন"
-              : "অফলাইন"}
+                ? "Typing..."
+                : "Online"
+              : "Offline"}
           </p>
         </div>
       </div>
@@ -154,7 +154,7 @@ const ChatWindow = () => {
               {msg.text}
               {isMine && idx === lastMineIndex && (
                 <span className={msg.seen ? "seen-indicator seen" : "seen-indicator"}>
-                  {msg.seen ? "✓✓ দেখা হয়েছে" : "✓ পাঠানো হয়েছে"}
+                  {msg.seen ? "✓✓ Seen" : "✓ Sent"}
                 </span>
               )}
             </div>
@@ -166,12 +166,12 @@ const ChatWindow = () => {
       <form className="chat-input-form" onSubmit={handleSend}>
         <input
           type="text"
-          placeholder="একটা মেসেজ লিখুন..."
+          placeholder="Write a message..."
           value={text}
           onChange={handleTypingInput}
         />
         <button type="submit" disabled={!text.trim()}>
-          পাঠান
+          Send
         </button>
       </form>
     </div>

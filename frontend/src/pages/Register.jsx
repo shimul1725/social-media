@@ -18,7 +18,7 @@ const Register = () => {
     setError("");
 
     if (form.password.length < 6) {
-      setError("পাসওয়ার্ড কমপক্ষে ৬ ক্যারেক্টার হতে হবে");
+      setError("The password must be at least 6 characters long");
       return;
     }
 
@@ -27,7 +27,7 @@ const Register = () => {
       await register(form.name, form.email, form.password);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "কিছু একটা সমস্যা হয়েছে");
+      setError(err.response?.data?.message || "Something has gone wrong.");
     } finally {
       setSubmitting(false);
     }
@@ -36,14 +36,14 @@ const Register = () => {
   return (
     <div className="auth-container">
       <form className="auth-card" onSubmit={handleSubmit}>
-        <h2>রেজিস্টার করুন</h2>
+        <h2>Register</h2>
 
         {error && <p className="error-msg">{error}</p>}
 
         <input
           type="text"
           name="name"
-          placeholder="আপনার নাম"
+          placeholder="Your name"
           value={form.name}
           onChange={handleChange}
           required
@@ -51,7 +51,7 @@ const Register = () => {
         <input
           type="email"
           name="email"
-          placeholder="ইমেইল"
+          placeholder="Email"
           value={form.email}
           onChange={handleChange}
           required
@@ -59,18 +59,18 @@ const Register = () => {
         <input
           type="password"
           name="password"
-          placeholder="পাসওয়ার্ড (কমপক্ষে ৬ ক্যারেক্টার)"
+          placeholder="Password (at least 6 characters)"
           value={form.password}
           onChange={handleChange}
           required
         />
 
         <button type="submit" disabled={submitting}>
-          {submitting ? "প্রসেসিং..." : "রেজিস্টার"}
+          {submitting ? "Processing..." : "Register"}
         </button>
 
         <p className="switch-link">
-          অ্যাকাউন্ট আছে? <Link to="/login">লগইন করুন</Link>
+         Do you have an account? <Link to="/login">Login</Link>
         </p>
       </form>
     </div>
